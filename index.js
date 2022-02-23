@@ -121,8 +121,8 @@ app.get("/test", (req, res) => {
     req.cookies["password"] !== undefined
   ) {
     res.render("test", {
-      userid: req.cookies["username"],
-      pass: req.cookies["password"],
+      userid: req.cookies["Name"],
+      pass: req.cookies["Reg_no"],
       link: link,
     });
   } else {
