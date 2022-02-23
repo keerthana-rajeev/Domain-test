@@ -8,6 +8,7 @@ require("dotenv").config();
 const User = require("./models/user.model");
 const Answer = require("./models/answer.model");
 const Recruit = require("./models/recruits.model");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 
@@ -62,13 +63,13 @@ app.post("/", (req, res) => {
     req.body.password
   );
   if (valid) {
-    User.findOne(
+    Recruit.findOne(
       {
-        username: req.body.username,
+        Email: req.body.username,
       },
-      function (err, user) {
+      function (err, rec) {
         try {
-          if (user.password == req.body.password) {
+          if (rec.validPassword(req.body.password)) {
             logU = true;
             message = "";
             res.cookie("username", req.body.username);
@@ -84,6 +85,7 @@ app.post("/", (req, res) => {
           res.redirect("/");
           message = "Invalid Username";
           console.log(message);
+          console.log(err);
         }
       }
     );
@@ -98,33 +100,20 @@ app.get("/signup", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-  //   console.log("UGHH");
-  //   console.log(req.body);
-  //   User.create(req.body.user, function (err, user) {
-  //     // console.log(user);
-  //     try {
-  //       // console.log(user);
-  //       logU = true;
-  //       res.redirect("/");
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   });
-  // });
   console.log(req.body.user.password);
-  Recruit.create(req.body.user, function (err, rec) {
-    // console.log(rec);
+  var recruit = new Recruit();
+  recruit.Name = req.body.user.Name;
+  recruit.Email = req.body.user.Email;
+  recruit.Password = bcrypt.hashSync(req.body.user.Password, 10); // Add the hashed password to the db
+  recruit.save((err, User) => {
     if (err) {
       console.log(err);
     } else {
-      // console.log(rec);
       logU = true;
-      // console.log(987);
       res.redirect("/");
     }
   });
 });
-
 app.get("/test", (req, res) => {
   /*console.log(req.cookies['username']);*/
   if (
