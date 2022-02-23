@@ -1,0 +1,41 @@
+<%- include("header")-%>
+<body oncontextmenu="return false;">
+  <style>
+    body{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none; 
+     -khtml-user-select: none; 
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none;
+}
+  </style>
+  <script src="/script.js" type="text/javascript"></script>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top justify-content-center">
+    <h1 id="timer" class="text-white"></h1>
+  </nav>
+    <div class="container test" style="margin-top:10vh;margin-bottom: 20vh;">
+      <h5>In case you are unable to answer a question, fill textarea as <b>N/A</b></h5>
+        <form id="myForm" action="/test/domain" method="POST">
+          <% for( let i = 0; i < ques.length; i++ ) { %>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Question <%= i+1 %>:<br><%= ques[i] %><span style="color:red">*</span></label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="a[]" required></textarea>
+            </div>
+          <% } %>
+              <center>
+                <div class="btn-group" role="group">
+                    <a href="/test" class="btn btn-danger" style="padding:0.75vw 1vw">Exit</a>
+                    <button type="button" class="btn btn-warning" style="padding:0 1vw" onclick="clearAll()">Reset</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+              </center> 
+               <script>
+                 function clearAll(){
+                  document.getElementById('myForm').reset();
+                 } 
+               </script>
+        </form>
+    </div>
+  </body>
+</html>
