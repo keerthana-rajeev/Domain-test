@@ -59,21 +59,21 @@ app.get("/", (req, res, next) => {
 
 app.post("/", (req, res) => {
   let { errors, valid } = validateUserInput(
-    req.body.username,
-    req.body.password
+    req.body.Name,
+    req.body.Reg_no
   );
   if (valid) {
     Recruit.findOne(
       {
-        Email: req.body.username,
+        Reg_no: req.body.Reg_no,
       },
       function (err, rec) {
         try {
-          if (rec.validPassword(req.body.password)) {
+          if (rec) {
             logU = true;
             message = "";
-            res.cookie("username", req.body.username);
-            res.cookie("password", req.body.password);
+            res.cookie("Name", req.body.Name);
+            res.cookie("Reg_no", req.body.Reg_no);
             console.log(req.cookies);
             res.redirect("/test");
           } else {
@@ -95,25 +95,25 @@ app.post("/", (req, res) => {
   }
 });
 
-app.get("/signup", (req, res) => {
-  res.render("signup");
-});
+// app.get("/signup", (req, res) => {
+//   res.render("signup");
+// });
 
-app.post("/signup", (req, res) => {
-  console.log(req.body.user.password);
-  var recruit = new Recruit();
-  recruit.Name = req.body.user.Name;
-  recruit.Email = req.body.user.Email;
-  recruit.Password = bcrypt.hashSync(req.body.user.Password, 10); // Add the hashed password to the db
-  recruit.save((err, User) => {
-    if (err) {
-      console.log(err);
-    } else {
-      logU = true;
-      res.redirect("/");
-    }
-  });
-});
+// app.post("/signup", (req, res) => {
+//   console.log(req.body.user.password);
+//   var recruit = new Recruit();
+//   recruit.Name = req.body.user.Name;
+//   recruit.Email = req.body.user.Email;
+//   recruit.Password = bcrypt.hashSync(req.body.user.Password, 10); // Add the hashed password to the db
+//   recruit.save((err, User) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       logU = true;
+//       res.redirect("/");
+//     }
+//   });
+// });
 app.get("/test", (req, res) => {
   /*console.log(req.cookies['username']);*/
   if (
@@ -143,7 +143,7 @@ app.get("/test/domain", (req, res) => {
     req.cookies["password"] !== undefined
   ) {
     var now = new Date().getTime();
-    var activ = new Date("August 03, 2021 20:00:00").getTime();
+    var activ = new Date("February 24 2022 01:00:00").getTime();
     console.log(now);
     console.log(activ);
 
